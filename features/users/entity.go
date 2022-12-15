@@ -1,11 +1,17 @@
 package users
 
+import "time"
+
 type UserCore struct {
-	ID       uint
-	Email    string
-	Password string
-	Status   string
-	Token    string
+	ID        uint
+	Name      string
+	Email     string
+	Password  string
+	Status    string
+	Token     string
+	Balance   BalanceCore
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type BalanceCore struct {
@@ -13,10 +19,13 @@ type BalanceCore struct {
 	IDCurrency uint
 	IDUser     uint
 	Amount     int
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type CurrencyCore struct {
-	ID uint
+	ID       uint
+	Currency string
 }
 
 type MailerCore struct {

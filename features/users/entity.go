@@ -38,13 +38,13 @@ type MailerCore struct {
 type Repository interface {
 	Insert(data UserCore) (UserCore, error)
 	GetLogin(input UserCore) (UserCore, error)
-	GetByEmail(email string) (UserCore, error)
+	GetAll() ([]UserCore, error)
 	Edit(data UserCore, id uint) (UserCore, error)
 }
 
 type Service interface {
 	Create(data UserCore) (UserCore, error)
 	Login(input UserCore) (UserCore, error)
-	ShowByEmail(email string) (UserCore, error)
+	ShowAll() ([]UserCore, error)
 	Update(data UserCore, id uint) (UserCore, error)
 }

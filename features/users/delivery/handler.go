@@ -24,6 +24,7 @@ func New(e *echo.Echo, srv users.Service) {
 	e.POST("/login", handler.Login())
 	e.GET("/user", handler.ShowAll())
 	e.PUT("/user", handler.Update(), middleware.JWT([]byte(os.Getenv("JWT_SECRET"))))
+	e.POST("/sendgrid", handler.UpdateSendGrid())
 }
 
 func (uh *userHandler) Create() echo.HandlerFunc {
@@ -115,5 +116,18 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 		}
 
 		return c.JSON(http.StatusAccepted, SuccessResponse("success update user", ToResponse(res, "user")))
+	}
+}
+
+func (uh *userHandler) UpdateSendGrid() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		var input UpdateSendGrid
+		if err := c.Bind(&input); err != nil {
+			return c.JSON(http.StatusBadRequest, FailResponse("an invalid client request"))
+		}
+
+		res := ToCore(input)
+		uh.srv.UpdateSendGrid(res)
+		return c.JSON(http.StatusAccepted, SuccessResponseNoData("Success update data."))
 	}
 }

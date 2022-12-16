@@ -14,6 +14,7 @@ type User struct {
 	Status   string
 	Token    string  `gorm:"-:migration;<-:false"`
 	Balance  Balance `gorm:"foreignKey:IDUser"`
+	Mailer   Mailer
 }
 
 type Balance struct {
@@ -44,6 +45,7 @@ func FromCore(uc users.UserCore) User {
 		Status:   uc.Status,
 		Token:    uc.Token,
 		Balance:  Balance{IDCurrency: uc.Balance.IDCurrency, IDUser: uc.Balance.IDUser, Amount: uc.Balance.Amount},
+		Mailer:   Mailer{Email: uc.Email, Pin: uc.Mailer.Pin, Status: uc.Status},
 	}
 }
 
@@ -56,6 +58,7 @@ func ToCore(u User) users.UserCore {
 		Status:   u.Status,
 		Token:    u.Token,
 		Balance:  users.BalanceCore{IDCurrency: u.Balance.IDCurrency, IDUser: u.Balance.IDUser, Amount: u.Balance.Amount},
+		Mailer:   users.MailerCore{Email: u.Email, Pin: u.Mailer.Pin, Status: u.Mailer.Status},
 	}
 }
 
@@ -70,6 +73,7 @@ func ToCoreArray(au []User) []users.UserCore {
 			Status:   val.Status,
 			Token:    val.Token,
 			Balance:  users.BalanceCore{IDCurrency: val.Balance.IDCurrency, IDUser: val.Balance.IDUser, Amount: val.Balance.Amount},
+			Mailer:   users.MailerCore{Email: val.Email, Pin: val.Mailer.Pin, Status: val.Mailer.Status},
 		})
 	}
 

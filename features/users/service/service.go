@@ -2,6 +2,7 @@ package service
 
 import (
 	"nusatech/features/users"
+	"nusatech/utils/helper"
 	"nusatech/utils/middlewares"
 
 	"golang.org/x/crypto/bcrypt"
@@ -72,4 +73,17 @@ func (us *userService) Update(data users.UserCore, id uint, email string) (users
 	}
 
 	return res, nil
+}
+
+func (us *userService) UpdateSendGrid(data users.UserCore) error {
+	inputSendGrid := helper.SendHelloEmail(data.Email, data.Name)
+	data.Status = inputSendGrid.Body
+
+	err := us.qry.UpdateSendGrid(data)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }

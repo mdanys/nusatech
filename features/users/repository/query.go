@@ -51,8 +51,13 @@ func (rq *repoQuery) GetAll() ([]users.UserCore, error) {
 	return res, nil
 }
 
-func (rq *repoQuery) Edit(data users.UserCore, id uint) (users.UserCore, error) {
+func (rq *repoQuery) Edit(data users.UserCore, id uint, email string) (users.UserCore, error) {
 	var cnv User = FromCore(data)
+	if err := rq.db.Preload("Balance").First(&cnv, "id = ? AND email = ?", id, email).Error; err != nil {
+		log.Error("error on query login user", err.Error())
+		return users.UserCore{}, err
+	}
+
 	err := rq.db.Where("id = ?", id).Updates(&cnv).Error
 	if err != nil {
 		log.Error("error on query edit data user", err.Error())

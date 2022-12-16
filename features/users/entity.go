@@ -39,12 +39,12 @@ type Repository interface {
 	Insert(data UserCore) (UserCore, error)
 	GetLogin(input UserCore) (UserCore, error)
 	GetAll() ([]UserCore, error)
-	Edit(data UserCore, id uint) (UserCore, error)
+	Edit(data UserCore, id uint, email string) (UserCore, error)
 }
 
 type Service interface {
 	Create(data UserCore) (UserCore, error)
 	Login(input UserCore) (UserCore, error)
 	ShowAll() ([]UserCore, error)
-	Update(data UserCore, id uint) (UserCore, error)
+	Update(data UserCore, id uint, email string) (UserCore, error)
 }

@@ -22,6 +22,8 @@ func (us *userService) Create(data users.UserCore) (users.UserCore, error) {
 	}
 	data.Password = string(generate)
 
+	data.Status = "pending"
+
 	res, err := us.qry.Insert(data)
 	if err != nil {
 		return users.UserCore{}, err
@@ -55,7 +57,7 @@ func (us *userService) ShowAll() ([]users.UserCore, error) {
 	return res, nil
 }
 
-func (us *userService) Update(data users.UserCore, id uint) (users.UserCore, error) {
+func (us *userService) Update(data users.UserCore, id uint, email string) (users.UserCore, error) {
 	if data.Password != "" {
 		generate, err := bcrypt.GenerateFromPassword([]byte(data.Password), bcrypt.DefaultCost)
 		if err != nil {
@@ -64,7 +66,7 @@ func (us *userService) Update(data users.UserCore, id uint) (users.UserCore, err
 		data.Password = string(generate)
 	}
 
-	res, err := us.qry.Edit(data, id)
+	res, err := us.qry.Edit(data, id, email)
 	if err != nil {
 		return users.UserCore{}, err
 	}

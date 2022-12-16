@@ -5,7 +5,7 @@ import "nusatech/features/users"
 type RegisterFormat struct {
 	Name     string `json:"name" form:"name" validate:"required,min=4,max=30"`
 	Email    string `json:"email" form:"email" validate:"required,email"`
-	Password string `json:"password" form:"password" validate:"required,alpha,numeric"`
+	Password string `json:"password" form:"password"`
 }
 
 type LoginFormat struct {
@@ -14,10 +14,10 @@ type LoginFormat struct {
 }
 
 type UpdateFormat struct {
-	Name     string `json:"name" form:"name" validate:"min=4,max=30"`
-	OldEmail string `json:"old_email" form:"old_email" validate:"email"`
-	NewEmail string `json:"new_email" form:"new_email" validate:"email"`
-	Password string `json:"password" form:"password" validate:"alpha,numeric"`
+	Name     string `json:"name" form:"name"`
+	OldEmail string `json:"old_email" form:"old_email"`
+	NewEmail string `json:"new_email" form:"new_email"`
+	Password string `json:"password" form:"password"`
 }
 
 func ToCore(i interface{}) users.UserCore {

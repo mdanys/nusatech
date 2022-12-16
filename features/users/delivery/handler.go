@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"nusatech/features/users"
 	"nusatech/utils/middlewares"
-	"strings"
 	"os"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -103,23 +103,13 @@ func (uh *userHandler) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, FailResponse("cannot bind input"))
 		}
 
-		er := validate.Struct(input)
-		if er != nil {
-			if strings.Contains(er.Error(), "min") {
-				return c.JSON(http.StatusBadRequest, FailResponse("min. 4 character"))
-			} else if strings.Contains(er.Error(), "max") {
-				return c.JSON(http.StatusBadRequest, FailResponse("max. 30 character"))
-			} else if strings.Contains(er.Error(), "email") {
-				return c.JSON(http.StatusBadRequest, FailResponse("must input valid email"))
-			}
-			return c.JSON(http.StatusBadRequest, FailResponse(er.Error()))
-		}
-
 		cnv := ToCore(input)
 		res, err := uh.srv.Update(cnv, IdUser, input.OldEmail)
 		if err != nil {
 			if strings.Contains(err.Error(), "email") {
-				return c.JSON(http.StatusBadRequest, FailResponse("email not match."))
+				return c.JSON(http.StatusBadRequest, FailResponse("email not match"))
+			} else if strings.Contains(err.Error(), "found") {
+				return c.JSON(http.StatusBadRequest, FailResponse("must input old email"))
 			}
 			return c.JSON(http.StatusInternalServerError, FailResponse("there is problem on server"))
 		}

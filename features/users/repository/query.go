@@ -52,14 +52,14 @@ func (rq *repoQuery) GetAll() ([]users.UserCore, error) {
 }
 
 func (rq *repoQuery) Edit(data users.UserCore, id uint, email string) (users.UserCore, error) {
+	var datas User
 	var cnv User = FromCore(data)
-	if err := rq.db.Preload("Balance").First(&cnv, "id = ? AND email = ?", id, email).Error; err != nil {
-		log.Error("error on query login user", err.Error())
+	if err := rq.db.First(&datas, "id = ? AND email = ?", id, email).Error; err != nil {
+		log.Error("error on query edit user", err.Error())
 		return users.UserCore{}, err
 	}
 
-	err := rq.db.Where("id = ?", id).Updates(&cnv).Error
-	if err != nil {
+	if err := rq.db.Where("id = ?", id).Updates(&cnv).Error; err != nil {
 		log.Error("error on query edit data user", err.Error())
 		return users.UserCore{}, err
 	}
@@ -67,7 +67,7 @@ func (rq *repoQuery) Edit(data users.UserCore, id uint, email string) (users.Use
 	er := rq.db.Preload("Balance").First(&cnv, "id = ?", id).Error
 	if er != nil {
 		log.Error("error on get data after edit", er.Error())
-		return users.UserCore{}, err
+		return users.UserCore{}, er
 	}
 
 	res := ToCore(cnv)

@@ -15,6 +15,12 @@ func FailResponse(msg string) map[string]interface{} {
 	}
 }
 
+func SuccessResponseNoData(msg string) map[string]interface{} {
+	return map[string]interface{}{
+		"message": msg,
+	}
+}
+
 type UserResponse struct {
 	ID     uint   `json:"id_user" form:"id_user"`
 	Name   string `json:"name" form:"name"`

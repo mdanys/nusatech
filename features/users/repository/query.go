@@ -73,3 +73,12 @@ func (rq *repoQuery) Edit(data users.UserCore, id uint, email string) (users.Use
 	res := ToCore(cnv)
 	return res, nil
 }
+
+func (rq *repoQuery) UpdateSendGrid(data users.UserCore) error {
+	var cnv User = FromCore(data)
+	if err := rq.db.Where("email = ?", cnv.Email).Updates(&cnv).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

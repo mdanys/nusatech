@@ -10,6 +10,7 @@ type UserCore struct {
 	Status    string
 	Token     string
 	Balance   BalanceCore
+	Mailer    MailerCore
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -40,6 +41,7 @@ type Repository interface {
 	GetLogin(input UserCore) (UserCore, error)
 	GetAll() ([]UserCore, error)
 	Edit(data UserCore, id uint, email string) (UserCore, error)
+	UpdateSendGrid(data UserCore) error
 }
 
 type Service interface {
@@ -47,4 +49,5 @@ type Service interface {
 	Login(input UserCore) (UserCore, error)
 	ShowAll() ([]UserCore, error)
 	Update(data UserCore, id uint, email string) (UserCore, error)
+	UpdateSendGrid(data UserCore) error
 }

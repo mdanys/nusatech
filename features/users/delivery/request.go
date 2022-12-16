@@ -20,6 +20,12 @@ type UpdateFormat struct {
 	Password string `json:"password" form:"password"`
 }
 
+type UpdateSendGrid struct {
+	ID    uint   `json:"id" form:"id"`
+	Name  string `json:"name" form:"name"`
+	Email string `json:"email" form:"email"`
+}
+
 func ToCore(i interface{}) users.UserCore {
 	switch i.(type) {
 	case RegisterFormat:
@@ -31,6 +37,9 @@ func ToCore(i interface{}) users.UserCore {
 	case UpdateFormat:
 		cnv := i.(UpdateFormat)
 		return users.UserCore{Name: cnv.Name, Email: cnv.NewEmail, Password: cnv.Password}
+	case UpdateSendGrid:
+		cnv := i.(UpdateSendGrid)
+		return users.UserCore{ID: cnv.ID, Name: cnv.Name, Email: cnv.Email}
 	}
 
 	return users.UserCore{}

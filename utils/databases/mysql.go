@@ -3,6 +3,7 @@ package databases
 import (
 	"fmt"
 	"nusatech/config"
+	"nusatech/features/users/repository"
 
 	"github.com/labstack/gommon/log"
 	"gorm.io/driver/mysql"
@@ -28,5 +29,8 @@ func InitDB(c *config.AppConfig) *gorm.DB {
 }
 
 func MigrateDB(db *gorm.DB) {
-	db.AutoMigrate()
+	db.AutoMigrate(&repository.User{})
+	db.AutoMigrate(&repository.Balance{})
+	db.AutoMigrate(&repository.Currency{})
+	db.AutoMigrate(&repository.Mailer{})
 }
